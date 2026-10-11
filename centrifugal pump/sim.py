@@ -16,7 +16,7 @@ nr = 50
 dr = (r2-r1)/(nr-1)
 ntheta = 100
 dtheta = 2*np.pi/(ntheta-1)
-# g = 9.81
+g = 9.81
 # We have a rectangle => nr x ntheta
 rpm = 3000
 swirl = 0.85 # swirl fraction (water speed/wheel speed)
@@ -48,7 +48,7 @@ v = v1*r1/R # continuity: v*r = constant
 # dp/dr = rho*u^2/r - 12*mu*v/b^2
 p = np.zeros((nr, ntheta))
 p_old = p.copy()
-for n in range(50):
+for n in range(500):
     p[1:,:] = p_old[0:-1,:] + dr*(rho*u[0:-1,:]**2/R[0:-1,:] - 12*mu*v[0:-1,:]/b**2)
     p_old = p.copy()
 
@@ -57,9 +57,8 @@ def apply_boundary(T):
     T[-1,:] = T[-2,:]
     T[:,-1] = T[:,0] # periodic: last column = first column
 
-
 T_old = T.copy()
-St = loss_fraction*(omega*R)**2*v/(b*Cp)
+St = loss_fraction*(omega*R)**2*v/(b*Cp*rho)
 beta = 2*h_wall*alpha/(b*k)
 for n in range(nit):
     # steady state, FDM, Jacobi iteration
@@ -86,6 +85,8 @@ for n in range(nit):
     wc = w[1:-1, 0]
     T[1:-1, 0] = ( vc*TW/dr - (wc/Rc)*TN/dtheta + alpha*((TE + TW)/dr**2 + (TE - TW)/(2*Rc*dr) + (TN + TS)/(Rc**2*dtheta**2)) + beta*T_wall + St[1:-1, 0])/(vc/dr - wc/(Rc*dtheta) + 2*alpha/dr**2 + 2*alpha/(Rc**2*dtheta**2) + beta )
 
+    residual = np.max(np.abs(T - T_old))
+
     if np.max(np.abs(T - T_old)) < 1e-7:
       print(f"Converged at n={n}")
       break
@@ -96,6 +97,18 @@ Y = R*np.sin(THETA)
 ux = v*np.cos(THETA) - w*np.sin(THETA)
 uy = v*np.sin(THETA) + w*np.cos(THETA)
 speed = np.sqrt(ux**2 + uy**2)
+
+# pump head
+pump_head = p[-1,0]/(rho*g)
+print(f"Pump head = {pump_head}m")
+# Outlet temperature
+T_outlet = T[-1,0]
+print(f"Outlet temperature = {T_outlet}")
+# Pressure error
+p_exact = 0.5*rho*swirl**2*omega**2*(r**2 - r1**2) - 12*mu*v1*r1*np.log(r/r1)/b**2
+p_error = (p_exact[-1]-p[-1,0])/p_exact[-1]
+print(f"Pressure error = {p_error*100}%")
+print(f"Residual = {residual}")
 
 # plot 1: temperature
 plt.figure(figsize=(6, 5))
@@ -109,7 +122,6 @@ plt.ylabel("y [m]")
 # plot 2: radial pressure rise
 plt.figure(figsize=(6, 4.5))
 plt.plot(r, p[:,0], "o-", ms=3, label="FDM (forward difference)")
-p_exact = 0.5*rho*swirl**2*omega**2*(r**2 - r1**2) - 12*mu*v1*r1*np.log(r/r1)/b**2
 plt.plot(r, p_exact, "--", label="closed form")
 plt.xlabel("Radius [m]")
 plt.ylabel("Gauge pressure [Pa]")

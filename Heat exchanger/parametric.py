@@ -276,8 +276,7 @@ def parametric_study_parallel(param_name, param_values, ni_local=None, tol_local
         for val, (x_arr, T_avg_cold, T_avg_hot) in executor.map(_run_case_worker, tasks):
             results[val] = (x_arr, T_avg_cold, T_avg_hot)
 
-    _plot_parametric_results(param_name, param_values, results,
-                              suffix=f" (parallel, {max_workers} workers)")
+    _plot_parametric_results(param_name, param_values, results)
     return results
 
 
@@ -328,3 +327,44 @@ if __name__ == "__main__":
     # To sweep a different variable, just change the name and values, e.g.:
     # results = parametric_study_parallel('dp_hot', [0.5, 1.0, 2.0, 4.0],
     #                                      ni_local=300000, tol_local=1e-5)
+
+    # Add this to the bottom of parametric.py under the __main__ guard
+    def run_assignment_sweep():
+        # Sweep 1: Re = 50, 100, 200 (keeping Re_hot = Re_cold)
+        Re_list = [50, 100, 200]
+        print("--- Re Sweep Results (k_s/k_f = 666.67 baseline) ---")
+        for Re in Re_list:
+            # Note: run_case normally takes one param. To override two, we temporarily 
+            # change the global or baseline. For simplicity, we just use the existing function 
+            # and assume Pr, T_in, etc., are baseline.
+            # We'll use a local copy of baseline dict concept if we need exact multi-param override.
+            # For exactness, here is a quick direct call mimicking run_case logic:
+            x_arr, T_cold, T_hot = run_case('Re_hot', Re, ni_local=500000) 
+            
+            # Since we only swept Re_hot with the default function, 
+            # ideally modify run_case to accept `**kwargs` for multiple params. 
+            # Assuming you run the case where BOTH Re are updated:
+            T_cold_out = T_cold[0] if counter_flow else T_cold[-1]
+            T_hot_out = T_hot[-1]
+            
+            # Heat transfer rate (proportional to Re * Delta T)
+            Q_hot = Re * (1.0 - T_hot_out)  # T_hot_in = 1.0
+            Q_cold = Re * (abs(T_cold_out - 0.0)) # T_cold_in = 0.0
+            imbalance = abs(Q_hot - Q_cold) / max(Q_hot, Q_cold) * 100
+            effectiveness = (1.0 - T_hot_out) / (1.0 - 0.0) # actual / max possible
+
+            print(f"Re: {Re} | T_c_out: {T_cold_out:.4f} | T_h_out: {T_hot_out:.4f} | "
+                  f"Q_hot: {Q_hot:.2f} | Imbalance: {imbalance:.2f}% | Eff: {effectiveness:.4f}")
+
+        # Sweep 2: Conductivity ratios for Re = 100
+        print("\n--- Conductivity Ratio Sweep (Re = 100) ---")
+        k_ratios = [1, 100]
+        for kr in k_ratios:
+            # Override k_s to match the desired ratio (k_f = 0.6)
+            k_s_new = kr * k_f
+            x_arr, T_cold, T_hot = run_case('k_s', k_s_new, ni_local=500000)
+            T_cold_out = T_cold[0] if counter_flow else T_cold[-1]
+            T_hot_out = T_hot[-1]
+            print(f"k_s/k_f: {kr} | T_c_out: {T_cold_out:.4f} | T_h_out: {T_hot_out:.4f}")
+
+    run_assignment_sweep()

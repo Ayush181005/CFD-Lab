@@ -26,9 +26,8 @@ u_inlet = 1            # U, nondimensional
 dt = Co * min(dx, dy) / u_inlet
 eta = 0.1*dt           # nondimensional penalty parameter
 alpha_p = 1.0          # time-marching: take the full pressure correction
-tol_cl = 1e-4          # steady state: Cl change over 500 steps below this
-aoa_list = [0, 5, 10, 15, 20, 30]      # angles of attack in degrees
-
+tol_cl = 1e-6          # steady state: Cl change over 500 steps below this
+aoa_list = [5]      # angles of attack in degrees
 
 def apply_boundary(u, v, p):
     # left (inlet)
@@ -132,20 +131,30 @@ for ia, aoa_deg in enumerate(aoa_list):
         v[1:-1,1:-1] = v[1:-1,1:-1] - dt*(pc[2:,1:-1] - pc[:-2,1:-1])/(2*dy)
         p = p_old + alpha_p*pc
 
-        # residual in the fluid only
-        res = max(np.max(np.abs(u - u_old)[~mask]), np.max(np.abs(v - v_old)[~mask]))/dt
+        # 5. Continuity residual: divergence of corrected velocity
+        div_corr = np.zeros((ny, nx))
+        div_corr[1:-1, 1:-1] = (
+            (u[1:-1, 2:] - u[1:-1, :-2]) / (2*dx)
+            + (v[2:, 1:-1] - v[:-2, 1:-1]) / (2*dy)
+        )
+        # Evaluate only interior fluid cells, excluding the airfoil
+        fluid_div = div_corr[1:-1, 1:-1][~mask[1:-1, 1:-1]]
+        # RMS and maximum absolute continuity residuals
+        cont_rms = np.sqrt(np.mean(fluid_div**2))
+        cont_max = np.max(np.abs(fluid_div))
 
         if n % 500 == 0:
-            print(f"aoa = {aoa_deg}, n = {n}, res = {res:.2e}, outflow/inflow = {np.sum(u[:,-1])/np.sum(u[:,0]):.3f}, "
-                  f"max|u| = {np.max(np.abs(u)):.3f}, Cl = {Cl[n]:.4f}, Cd = {Cd[n]:.4f}")
+            print(f"aoa = {aoa_deg}, n = {n}, res = {cont_max:.2e}, Cl = {Cl[n]:.4f}, Cd = {Cd[n]:.4f}")
 
         # steady state: Cl no longer changing
         if n > 3000 and abs(Cl[n] - Cl[n-500]) < tol_cl:
             break
+        # if cont_max < 1e-6:
+        #     break
 
     Cl_aoa[ia] = np.mean(Cl[max(n-100, 0):n+1])
     Cd_aoa[ia] = np.mean(Cd[max(n-100, 0):n+1])
-    print(f"aoa = {aoa_deg} deg, steps = {n+1}, residual = {res:.2e}, Cl = {Cl_aoa[ia]:.4f}, Cd = {Cd_aoa[ia]:.4f}")
+    print(f"aoa = {aoa_deg} deg, steps = {n+1}, residual = {cont_max:.2e}, Cl = {Cl_aoa[ia]:.4f}, Cd = {Cd_aoa[ia]:.4f}")
 
 # ---------- Cl vs aoa ----------
 aoa_arr = np.array(aoa_list)
