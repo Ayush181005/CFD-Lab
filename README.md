@@ -106,7 +106,7 @@ Simulate unsteady flow past a circular cylinder and study alternating vortex she
 
 ### 7. 1D Shallow Water Wave Propagation
 
-<a href="shallow%20water/README.md"><img src="Shallow%20Wave%20propagation/Figure_1.png" alt="Initial hump, exact solution and explicit and implicit solutions of the 1D shallow water wave" width="100%"></a>
+<a href="Shallow%20Wave%20propagation/README.md"><img src="Shallow%20Wave%20propagation/Figure_1.png" alt="Initial hump, exact solution and explicit and implicit solutions of the 1D shallow water wave" width="100%"></a>
 
 Propagate a surface hump governed by the linear shallow water equations and compare explicit and implicit upwind solutions with the exact analytical result, including numerical diffusion effects.
 
@@ -119,7 +119,7 @@ Propagate a surface hump governed by the linear shallow water equations and comp
 
 ### 8. Rayleigh–Taylor Instability
 
-<a href="Rayleigh%20Taylor/README.md"><img src="Rayleigh-Taylor%20instability/Figure_1.png" alt="Volume-fraction field of the Rayleigh-Taylor instability at successive times" width="100%"></a>
+<a href="Rayleigh-Taylor%20instability/README.md"><img src="Rayleigh-Taylor%20instability/Figure_1.png" alt="Volume-fraction field of the Rayleigh-Taylor instability at successive times" width="100%"></a>
 
 Simulate a heavy fluid above a light fluid and follow the growth of a single-mode interface perturbation under buoyancy using a two-fluid incompressible solver.
 
@@ -134,7 +134,7 @@ Simulate a heavy fluid above a light fluid and follow the growth of a single-mod
 
 ### 9. Lid-Driven Cavity Flow
 
-<a href="lid%20driven%20cavity/README.md"><img src="Lid-driven%20cavity/Figure_1.png" alt="Streamlines and velocity magnitude in the lid-driven cavity at Re = 100" width="100%"></a>
+<a href="Lid-driven%20cavity/README.md"><img src="Lid-driven%20cavity/Figure_1.png" alt="Streamlines and velocity magnitude in the lid-driven cavity at Re = 100" width="100%"></a>
 
 Solve the classical lid-driven cavity at \(Re = 100\) on a collocated grid and validate the centreline velocity against the benchmark data of Ghia et al. (1982).
 
@@ -147,7 +147,7 @@ Solve the classical lid-driven cavity at \(Re = 100\) on a collocated grid and v
 
 ### 10. Turbulent Pipe Flow
 
-<a href="turbulent%20pipe/README.md"><img src="Turbulent%20pipe/Figure_1.png" alt="Mean velocity profiles, law of the wall and friction factor for turbulent pipe flow" width="100%"></a>
+<a href="Turbulent%20pipe/README.md"><img src="Turbulent%20pipe/Figure_1.png" alt="Mean velocity profiles, law of the wall and friction factor for turbulent pipe flow" width="100%"></a>
 
 Compute the mean velocity profile of fully developed turbulent pipe flow with algebraic eddy-viscosity models and compare with the law of the wall and the Blasius friction factor.
 
@@ -162,7 +162,7 @@ Compute the mean velocity profile of fully developed turbulent pipe flow with al
 
 ### 11. 3D Convection–Diffusion
 
-<a href="3D%20convection%20diffusion/README.md"><img src="Convection-diffusion/3D_Convection_Diffusion.gif" alt="3D scatter plot of the diffused velocity field" width="100%"></a>
+<a href="Convection-diffusion/README.md"><img src="Convection-diffusion/3D_Convection_Diffusion.gif" alt="3D scatter plot of the diffused velocity field" width="100%"></a>
 
 Solve the coupled 3D viscous Burgers equations on a cubic domain and observe how an initial high-velocity cube diffuses and convects towards the ambient state.
 
