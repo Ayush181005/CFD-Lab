@@ -112,7 +112,7 @@ Propagate a surface hump governed by the linear shallow water equations and comp
 
 **Key methods:** Characteristic variables, FVM first-order upwind, explicit and implicit schemes, Jacobi iteration, modified-equation analysis.
 
-[Open experiment README →](<shallow water/README.md>)
+[Open experiment README →](<Shallow Wave propagation/README.md>)
 
 </td>
     <td width="50%" valign="top">
@@ -125,7 +125,7 @@ Simulate a heavy fluid above a light fluid and follow the growth of a single-mod
 
 **Key methods:** SIMPLE pressure–velocity coupling, Power-Law scheme, Volume of Fluid (VOF), adaptive time step.
 
-[Open experiment README →](<Rayleigh Taylor/README.md>)
+[Open experiment README →](<Rayleigh Taylor instability/README.md>)
 
 </td>
   </tr>
@@ -140,7 +140,7 @@ Solve the classical lid-driven cavity at \(Re = 100\) on a collocated grid and v
 
 **Key methods:** SIMPLE algorithm, collocated grid, Power-Law scheme, pressure under-relaxation, benchmark validation.
 
-[Open experiment README →](<lid driven cavity/README.md>)
+[Open experiment README →](<Lid-driven cavity/README.md>)
 
 </td>
     <td width="50%" valign="top">
@@ -153,7 +153,7 @@ Compute the mean velocity profile of fully developed turbulent pipe flow with al
 
 **Key methods:** RANS (Boussinesq), Prandtl and van Driest mixing length, FVM on concentric rings, Picard iteration.
 
-[Open experiment README →](<turbulent pipe/README.md>)
+[Open experiment README →](<Turbulent pipe/README.md>)
 
 </td>
   </tr>
@@ -168,7 +168,7 @@ Solve the coupled 3D viscous Burgers equations on a cubic domain and observe how
 
 **Key methods:** FDM, explicit time marching, convection–diffusion, diffusion-based stability limit.
 
-[Open experiment README →](<3D convection diffusion/README.md>)
+[Open experiment README →](<Convection-diffusion/README.md>)
 
 </td>
     <td width="50%" valign="top"></td>
