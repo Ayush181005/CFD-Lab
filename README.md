@@ -147,7 +147,7 @@ Solve the classical lid-driven cavity at \(Re = 100\) on a collocated grid and v
 
 ### 10. Turbulent Pipe Flow
 
-<a href="turbulent%20pipe/README.md"><img src="turbulent%20pipe/Figure_1.png" alt="Mean velocity profiles, law of the wall and friction factor for turbulent pipe flow" width="100%"></a>
+<a href="turbulent%20pipe/README.md"><img src="Turbulent%20pipe/Figure_1.png" alt="Mean velocity profiles, law of the wall and friction factor for turbulent pipe flow" width="100%"></a>
 
 Compute the mean velocity profile of fully developed turbulent pipe flow with algebraic eddy-viscosity models and compare with the law of the wall and the Blasius friction factor.
 
@@ -162,7 +162,7 @@ Compute the mean velocity profile of fully developed turbulent pipe flow with al
 
 ### 11. 3D Convection–Diffusion
 
-<a href="3D%20convection%20diffusion/README.md"><img src="3D%20convection%20diffusion/Figure_2.png" alt="3D scatter plot of the diffused velocity field" width="100%"></a>
+<a href="3D%20convection%20diffusion/README.md"><img src="Convection-diffusion/3D_Convection_Diffusion.gif" alt="3D scatter plot of the diffused velocity field" width="100%"></a>
 
 Solve the coupled 3D viscous Burgers equations on a cubic domain and observe how an initial high-velocity cube diffuses and convects towards the ambient state.
 
